@@ -1,0 +1,53 @@
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<div style = "position:relative;">
+		<img id ="img1" src ="FloorPlan.jpg" width = "500" height = "500">
+	</div>
+	<div style = "position:relative;">
+		<img id ="img2" src ="FloorPlan.jpg" width = "500" height = "500">
+	</div>
+	<script type="text/javascript">
+		function clickHandler(evt){
+           //console.log("Initial..."+evt.pageX + "   " + evt.pageY);
+           var target = evt.target;
+           var x = evt.pageX - $(target).offset().left;
+           var y = evt.pageY - $(target).offset().top;
+          // console.log("Modified..."+x + "   " + y);           
+           addSensor(target.parentNode,x,y);
+		}
+
+		function addSensor(target,x_pos,y_pos){
+			var sensorImg = document.createElement("img");
+			sensorImg.src = "sensorimg.jpg";
+			var offsetleft = $(target).offset().left;
+            var offsettop = $(target).offset().top;
+            var newStyle = "";
+            newStyle += "position:absolute;";
+            newStyle += "left:"+x_pos+"px;";
+             newStyle += "top:"+y_pos+"px;";
+            newStyle += "z-index:100;";
+            newStyle += "width:30px;";
+            newStyle += "height:30px";
+            sensorImg.style = newStyle;
+            target.appendChild(sensorImg);
+            sensorImg.addEventListener("click", removeSensor)
+		}
+
+		function removeSensor(evt){
+			var target = evt.target;
+			target.removeEventListener("click", removeSensor);
+			var parentNode = target.parentNode;
+			parentNode.removeChild(target);
+		}
+		
+		var img1 = document.getElementById("img1");
+		img1.addEventListener("click", clickHandler);
+		var img2 = document.getElementById("img2");
+		img2.addEventListener("click", clickHandler);
+
+	</script>
+</body>
+</html>
